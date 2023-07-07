@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Timesheet</title>
+
+    <link rel="stylesheet" href="~/assets/css/app.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <link rel="stylesheet" href="~/assets/css/components.css">
+    <!-- Custom style CSS -->
+    <link rel="stylesheet" href="~/assets/css/custom.css">
+    <link rel='shortcut icon' type='image/x-icon' href='~/assets/img/favicon.ico' />
+    @*
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ApinTimesheet.styles.css" asp-append-version="true" />*@
+</head>
+<body>
+    <div class="loader"></div>
+    <div id="app">
+        <div class="main-wrapper main-wrapper-1">
+            <!-- Navigation Bar -->
+            <partial name="_Navbar" />
+
+            <!-- Main Content -->
+            @RenderBody()
+
+            <!-- Footer Page -->
+            <footer class="main-footer">
+                <div class="footer-left">
+                    @* <a href="templateshub.net">Templateshub</a>*@
+                    &copy; 2023 - Testing - <a asp-area="" asp-controller="Home" asp-action="Index">PHI3</a>
+                </div>
+                <div class="footer-right">
+                </div>
+            </footer>
+        </div>
+    </div>
+    @*
+    <footer class="border-top footer text-muted">
+    <div class="container">
+    &copy; 2023 - ApinTimesheet - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+    </footer>*@
+
+    <script src="~/assets/js/app.min.js"></script>
+    <!-- JS Libraies -->
+    <script src="~/assets/bundles/apexcharts/apexcharts.min.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="~/assets/js/page/index.js"></script>
+    <!-- Template JS File -->
+    <script src="~/assets/js/scripts.js"></script>
+    <!-- Custom JS File -->
+    <script src="~/assets/js/custom.js"></script>
+    @*
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>*@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

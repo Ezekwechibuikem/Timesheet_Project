@@ -1,0 +1,74 @@
+﻿@model Timesheet_Project.Models.Timesheet
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    <section class="section">
+        <div class="section-body">
+            @*<div class="row">
+            <div class="col-12 col-md-6 col-lg-6">*@
+            <div class="card">
+                <div class="card-header">
+                    <h4>New Timesheet</h4>
+                </div>
+                <div class="card-body">
+                    <nav aria-label="breadcrumb" class="mt-2 float-md-right float-left">
+                        <ol class="breadcrumb mb-0 justify-content-end p-0">
+                            <li class="breadcrumb-item"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+                            @*<li class="breadcrumb-item"><a href="#">Library</a></li>*@
+                            <li class="breadcrumb-item active" aria-current="page">Create</li>
+                        </ol>
+                    </nav>
+                    <p>
+                        <a asp-action="Create" class="btn btn-primary">Create New</a>
+                    </p>
+                    <div class="card-body mr-2 float-md-right float-left" style="padding:0px;">
+                        <form asp-action="MyTimeSheet" method="post">
+                            <div class="card-body" style="padding:0px;">
+                                <div class="row">
+                                    <div class="col-6 col-md-5" style="padding: 5px;">
+                                        <select name="month" class="form-control" onchange="$('#btn_refresh').click()">
+                                            @* <option>...Select Month...</option> *@
+                                            <option value="1">January</option>
+                                            <option value="2">February</option>
+                                            <option value="3">March</option>
+                                            <option value="4">April</option>
+                                            <option value="5">May</option>
+                                            <option value="6">June</option>
+                                            <option value="7">July</option>
+                                            <option value="8">August</option>
+                                            <option value="9">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6 col-md-5" style="padding: 5px;">
+                                        <select name="year" onchange="$('#btn_refresh').click()" class="form-control">
+                                            @for (var i = 2021; i <= DateTime.Now.Year; i++)
+                                            {
+                                                <option value="@i">@i</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2" style="padding: 5px;">
+                                        <button type="submit" onClick="refreshPage()" class="btn btn-info btn-circle" id="btn_refresh"><i class="fas fa-redo-alt"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    @* <a href="#" class="btn btn-primary">Primary</a>*@
+                    @*   </div>
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
