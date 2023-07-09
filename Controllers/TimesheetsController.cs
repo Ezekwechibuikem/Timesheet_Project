@@ -26,49 +26,49 @@ namespace Timesheet_Project.Controllers
             var timesheetDBContext = _context.Timesheets.Include(t => t.Emp);
             return View(await timesheetDBContext.ToListAsync());
         }
-        //public async Task<IActionResult> Create(int? timesheet_id)
-        //{
-        //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //var emp = _hrmUtilService.GetEmployeeByUserId(userId);
+        public async Task<IActionResult> Create(int? timesheet_id)
+        {
+            //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 1);
 
-        //if (EmpId != null)
-        //{
-        //if (timesheet_id.HasValue && timesheet_id < 1)
-        //{
-        //    ViewBag.Message = TempData["Message"];
-        //    return View(null);
-        //}
-        //else
-        //{
-        //    //ViewBag.emp_number = emp.EmpNumber;
-        //    var timesheet = await _timesheetService.GetEmployeeLastTimesheet(emp.EmpNumber);
-        //    var timesheetModel = new TimesheetModel
-        //    {
-        //        Timesheet = timesheet
-        //    };
-        //    if (timesheet == null)
-        //    {
-        //        timesheetModel.month = DateTime.Now.Month;
-        //        timesheetModel.year = DateTime.Now.Year;
-        //    }
-        //    else
-        //    {
-        //        timesheetModel.month = timesheet.StartDate.Month;
-        //        timesheetModel.year = timesheet.StartDate.Year;
-        //    }
-        //    ViewBag.Message = TempData["Message"];
-        //    return View(timesheetModel);
-        //}
-        //}
-        //return NotFound();
-        //}
+            if (emp != null)
+            {
+                if (timesheet_id.HasValue && timesheet_id < 1)
+                {
+                    ViewBag.Message = TempData["Message"];
+                    return View(null);
+                }
+                else
+                {
+                    //ViewBag.emp_number = emp.EmpNumber;
+                    var timesheet = _context.Timesheets.Include(m => m.TimesheetItems).OrderByDescending(m => m.TimesheetId).FirstOrDefault(m => m.EmpId == emp.Id);
+                    var timesheetModel = new TimesheetModel
+                    {
+                        Timesheet = timesheet
+                    };
+                    if (timesheet == null)
+                    {
+                        timesheetModel.month = DateTime.Now.Month;
+                        timesheetModel.year = DateTime.Now.Year;
+                    }
+                    else
+                    {
+                        timesheetModel.month = timesheet.StartDate.Month;
+                        timesheetModel.year = timesheet.StartDate.Year;
+                    }
+                    ViewBag.Message = TempData["Message"];
+                    return View(timesheetModel);
+                }
+            }
+            return NotFound();
+        }
 
         // GET: Timesheets/Create
-        public IActionResult Create()
-        {
-            ViewData["EmpId"] = new SelectList(_context.Employees, "Id", "Id");
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    ViewData["EmpId"] = new SelectList(_context.Employees, "Id", "Id");
+        //    return View();
+        //}
 
         [HttpPost]
         //[PermissionFilter(permission = "timesheet.mytimesheet")]
