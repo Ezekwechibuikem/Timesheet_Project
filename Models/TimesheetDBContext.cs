@@ -18,6 +18,7 @@ namespace Timesheet_Project.Models
 
         public virtual DbSet<EmpProject> EmpProjects { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
+        public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<Timesheet> Timesheets { get; set; } = null!;
         public virtual DbSet<TimesheetActionLog> TimesheetActionLogs { get; set; } = null!;
         public virtual DbSet<TimesheetItem> TimesheetItems { get; set; } = null!;
@@ -26,7 +27,6 @@ namespace Timesheet_Project.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-
             }
         }
 
@@ -34,24 +34,15 @@ namespace Timesheet_Project.Models
         {
             modelBuilder.Entity<EmpProject>(entity =>
             {
-                entity.HasKey(e => e.ProjectId)
-                    .HasName("PK__EmpProje__BC799E1F5ADE9DCA");
+                entity.HasNoKey();
 
                 entity.ToTable("EmpProject");
 
-                entity.Property(e => e.ProjectId).HasColumnName("project_id");
-
                 entity.Property(e => e.EmpId).HasColumnName("emp_id");
 
-                entity.Property(e => e.ProjectName)
-                    .HasMaxLength(50)
-                    .HasColumnName("project_name");
-
-                entity.HasOne(d => d.Emp)
-                    .WithMany(p => p.EmpProjects)
-                    .HasForeignKey(d => d.EmpId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__EmpProjec__emp_i__3F466844");
+                entity.Property(e => e.EmpProjectId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("emp_project_id");
             });
 
             modelBuilder.Entity<Employee>(entity =>
@@ -67,6 +58,17 @@ namespace Timesheet_Project.Models
                 entity.Property(e => e.Firstname)
                     .HasMaxLength(50)
                     .HasColumnName("firstname");
+            });
+
+            modelBuilder.Entity<Project>(entity =>
+            {
+                entity.ToTable("project");
+
+                entity.Property(e => e.ProjectId).HasColumnName("project_id");
+
+                entity.Property(e => e.ProjectName)
+                    .HasMaxLength(50)
+                    .HasColumnName("project_name");
             });
 
             modelBuilder.Entity<Timesheet>(entity =>
@@ -165,7 +167,7 @@ namespace Timesheet_Project.Models
                     .WithMany(p => p.TimesheetItems)
                     .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Timesheet__proje__4316F928");
+                    .HasConstraintName("FK_TimesheetItem_TimesheetItem");
 
                 entity.HasOne(d => d.Timesheet)
                     .WithMany(p => p.TimesheetItems)

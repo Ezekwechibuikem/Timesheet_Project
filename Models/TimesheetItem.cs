@@ -16,7 +16,7 @@ namespace Timesheet_Project.Models
         public byte[]? Signature { get; set; }
 
         public virtual Employee Emp { get; set; } = null!;
-        public virtual EmpProject Project { get; set; } = null!;
+        public virtual Project Project { get; set; } = null!;
         public virtual Timesheet Timesheet { get; set; } = null!;
     }
 }
