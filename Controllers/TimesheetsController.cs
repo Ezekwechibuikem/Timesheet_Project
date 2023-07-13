@@ -21,16 +21,18 @@ namespace Timesheet_Project.Controllers
             _context = context;
         }
 
-        //GET: Timesheets
         public async Task<IActionResult> Index()
         {
             var timesheetDBContext = _context.Timesheets.Include(t => t.Emp);
             return View(await timesheetDBContext.ToListAsync());
         }
-        public async Task<IActionResult> Create(int? timesheet_id)
+
+        [HttpGet]
+        public IActionResult Create(int? timesheet_id)
+        //public async Task<IActionResult> Create(int? timesheet_id)
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var emp = _context.Employees.FirstOrDefault(m => m.Id == 1);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 4);
 
             if (emp != null)
             {
@@ -64,14 +66,41 @@ namespace Timesheet_Project.Controllers
             return NotFound();
         }
 
-        // GET: Timesheets/Create
-        //public IActionResult Create()
+
+        //[PermissionFilter(permission = "timesheet.mytimesheet")]
+        //public async Task<ActionResult> Create(IFormCollection form_collection)
         //{
-        //    ViewData["EmpId"] = new SelectList(_context.Employees, "Id", "Id");
-        //    return View();
+        //    var year = Convert.ToInt32(form_collection["year"]);
+        //    var month = Convert.ToInt32(form_collection["month"]);
+        //    var start_date = new DateTime(year, month, 1);
+        //    var end_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+        //    //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    //var emp = _hrmUtilService.GetEmployeeByUserId(userId);
+
+        //    var timesheet = await _context.Timesheets.Include(m => m.TimesheetItems)
+        //    .OrderByDescending(m => m.TimesheetId)
+        //    .FirstOrDefaultAsync(m => m.EmpId == 1 && m.StartDate == start_date && m.EndDate == end_date);
+
+
+        //    //var timesheet = await _timesheetService.GetEmployeeTimesheetByDates(start_date, end_date, emp.EmpNumber);
+        //    var timesheetModel = new TimesheetModel
+        //    {
+        //        Timesheet = timesheet
+        //    };
+        //    if (timesheet == null)
+        //    {
+        //        timesheetModel.month = month;
+        //        timesheetModel.year = year;
+        //    }
+        //    else
+        //    {
+        //        timesheetModel.month = timesheet.StartDate.Month;
+        //        timesheetModel.year = timesheet.StartDate.Year;
+        //    }
+        //    return View(timesheetModel);
         //}
 
-        [HttpPost]
+        [HttpPost] //HttpPost for create
         //[PermissionFilter(permission = "timesheet.mytimesheet")]
         public async Task<ActionResult> Create(IFormCollection form_collection)
         {
@@ -81,12 +110,11 @@ namespace Timesheet_Project.Controllers
             var end_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
 
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var emp = _hrmUtilService.GetEmployeeByUserId(userId);
-
             var timesheet = await _context.Timesheets.Include(m => m.TimesheetItems)
             .OrderByDescending(m => m.TimesheetId)
-            .FirstOrDefaultAsync(m => m.EmpId == 1 && m.StartDate == start_date && m.EndDate == end_date);
+             .FirstOrDefaultAsync(m => m.EmpId == 1 && m.StartDate == start_date && m.EndDate == end_date);
 
+            //var emp = _hrmUtilService.GetEmployeeByUserId(userId);
 
             //var timesheet = await _timesheetService.GetEmployeeTimesheetByDates(start_date, end_date, emp.EmpNumber);
             var timesheetModel = new TimesheetModel
@@ -106,6 +134,7 @@ namespace Timesheet_Project.Controllers
             return View(timesheetModel);
         }
 
+
         // GET: Timesheets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -124,78 +153,6 @@ namespace Timesheet_Project.Controllers
 
             return View(timesheet);
         }
-
-    
-
-        //// POST: Timesheets/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("TimesheetId,EmpId,State,StartDate,EndDate,CreatedAt")] Timesheet timesheet)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(timesheet);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["EmpId"] = new SelectList(_context.Employees, "Id", "Id", timesheet.EmpId);
-        //    return View(timesheet);
-        //}
-
-        // GET: Timesheets/Edit/5
-        //public async Task<IActionResult> Edit(int? id)
-        //{
-        //    if (id == null || _context.Timesheets == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var timesheet = await _context.Timesheets.FindAsync(id);
-        //    if (timesheet == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["EmpId"] = new SelectList(_context.Employees, "Id", "Id", timesheet.EmpId);
-        //    return View(timesheet);
-        //}
-
-        // POST: Timesheets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("TimesheetId,EmpId,State,StartDate,EndDate,CreatedAt")] Timesheet timesheet)
-        //{
-        //    if (id != timesheet.TimesheetId)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(timesheet);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!TimesheetExists(timesheet.TimesheetId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["EmpId"] = new SelectList(_context.Employees, "Id", "Id", timesheet.EmpId);
-        //    return View(timesheet);
-        //}
 
         // GET: Timesheets/Delete/5
         [HttpPost]
