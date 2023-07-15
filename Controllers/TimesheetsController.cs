@@ -27,12 +27,12 @@ namespace Timesheet_Project.Controllers
             return View(await timesheetDBContext.ToListAsync());
         }
 
-        [HttpGet]
-        public IActionResult Create(int? timesheet_id)
+        //myTimeSheet
+        public async Task<IActionResult> Create(int? timesheet_id)
         //public async Task<IActionResult> Create(int? timesheet_id)
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var emp = _context.Employees.FirstOrDefault(m => m.Id == 4);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 2);
 
             if (emp != null)
             {
@@ -65,40 +65,6 @@ namespace Timesheet_Project.Controllers
             }
             return NotFound();
         }
-
-
-        //[PermissionFilter(permission = "timesheet.mytimesheet")]
-        //public async Task<ActionResult> Create(IFormCollection form_collection)
-        //{
-        //    var year = Convert.ToInt32(form_collection["year"]);
-        //    var month = Convert.ToInt32(form_collection["month"]);
-        //    var start_date = new DateTime(year, month, 1);
-        //    var end_date = new DateTime(year, month, DateTime.DaysInMonth(year, month));
-        //    //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    //var emp = _hrmUtilService.GetEmployeeByUserId(userId);
-
-        //    var timesheet = await _context.Timesheets.Include(m => m.TimesheetItems)
-        //    .OrderByDescending(m => m.TimesheetId)
-        //    .FirstOrDefaultAsync(m => m.EmpId == 1 && m.StartDate == start_date && m.EndDate == end_date);
-
-
-        //    //var timesheet = await _timesheetService.GetEmployeeTimesheetByDates(start_date, end_date, emp.EmpNumber);
-        //    var timesheetModel = new TimesheetModel
-        //    {
-        //        Timesheet = timesheet
-        //    };
-        //    if (timesheet == null)
-        //    {
-        //        timesheetModel.month = month;
-        //        timesheetModel.year = year;
-        //    }
-        //    else
-        //    {
-        //        timesheetModel.month = timesheet.StartDate.Month;
-        //        timesheetModel.year = timesheet.StartDate.Year;
-        //    }
-        //    return View(timesheetModel);
-        //}
 
         [HttpPost] //HttpPost for create
         //[PermissionFilter(permission = "timesheet.mytimesheet")]

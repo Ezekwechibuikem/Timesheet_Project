@@ -5,13 +5,13 @@
 }
 
 <div class="main-content">
+    <h4 class="card-header">Edit Timesheet for @(new DateTime(Model.year, Model.month, 1).ToString("MMMM yyyy"))</h4>
     <section class="section">
         <div class="section-body">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-header">Edit Timesheet for @(new DateTime(Model.year, Model.month, 1).ToString("MMMM yyyy"))</h4>
                             <form asp-action="PostTimesheet" method="POST">
                                 <input type="hidden" value="@Model.Timesheet.TimesheetId" name="timesheet_id" />
                                 @{
