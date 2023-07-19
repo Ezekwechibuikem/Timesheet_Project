@@ -5,33 +5,30 @@
 }
 
 <div class="main-content">
-    <h4 class="card-header">Edit Timesheet for @(new DateTime(Model.year, Model.month, 1).ToString("MMMM yyyy"))</h4>
     <section class="section">
         <div class="section-body">
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
+                            <h4 class="card-header">Edit Timesheet for @(new DateTime(Model.year, Model.month, 1).ToString("MMMM yyyy"))</h4>
+                        </div>
                             <form asp-action="PostTimesheet" method="POST">
                                 <input type="hidden" value="@Model.Timesheet.TimesheetId" name="timesheet_id" />
                                 @{
-                                    //double weeks = (Model.TimeSheetDays.LastOrDefault().Date - Model.TimeSheetDays.FirstOrDefault().Date).TotalDays / 7;
                                     List<int> allweeks = Model.TimesheetDays.Select(m => m.WeekOfMonth).Distinct().ToList();
                                 }
-                                @* @for (var i = Model.FirstWeek; i <= Model.LastWeek; i++) *@
-                                @* @for (var i = 0; i <= weeks; i++) *@
                                 @foreach (var i in allweeks)
                                 {
-
                                     var project_id = "project_" + i;
-                                   @* var activity_id = "activity_" + i;*@
+
                                     <div class="table-responsive">
-                                        <table class="table table-responsive table-bordered table-striped" id="tbl_@i" style="min-width: 400px;">
+                                        <table class="table table-responsive table-bordered table-striped" id="tbl_@i" style="min-width: 600px;">
                                             <thead>
                                                 <tr>
-                                                    <th class="bg-warning" width="1%">Wk</th>
-                                                    <th class="bg-warning" width="8%">Project Name</th>
-                                                @*    <th class="bg-warning" width="10%">Activity</th>*@
+                                                    <th class="bg-secondary" width="1%">Wk</th>
+                                                    <th class="bg-secondary" width="10%">Project Name</th>
+                          
                                                     @{
                                                         //get all days in a particular week
                                                         var week_days = Model.TimesheetDays.Where(e => e.WeekOfMonth == i);
@@ -42,11 +39,11 @@
                                                         {
                                                             //get all timesheets submitted for this week
                                                             var week_time_sheets = Model.TimesheetItem.Where(e => e.Week == i && e.Date.Month == Model.month);
-                                                            var re_value = week_time_sheets.Select(m => new { m.ProjectId}).Distinct().ToList();
+                                                            var re_value = week_time_sheets.Select(m => new { m.ProjectId, /*m.ActivityId*/ }).Distinct().ToList();
 
                                                             foreach (var value in re_value)
                                                             {
-                                                                proj_activity_list.Add(new int[] { value.ProjectId });
+                                                                proj_activity_list.Add(new int[] { value.ProjectId, /*value.ActivityId*/ });
                                                             }
                                                         }
                                                     }
@@ -54,22 +51,22 @@
                                                     {
                                                         if (day.Date.Month == Model.month)
                                                         {
-                                                            var lorh = ""; //ArrangeUtil.HolidayOrLeave(day.Date, ViewBag.EmpNumber);
+                                                            var lorh = ""; @*ArrangeUtil.HolidayOrLeave(day.Date, ViewBag.EmpNumber);*@
                                                             @if (!string.IsNullOrEmpty(lorh))
                                                             {
-                                                                <th class="bg-success" style="text-align:center" width="10%">@day.DayOfWeek.Substring(0, 3) @day.DayOfMonth [@lorh]</th>
+                                                                <th class="bg-secondary" style="text-align:center" width="10%">@day.DayOfWeek.Substring(0, 3) @day.DayOfMonth [@lorh]</th>
                                                             }
                                                             else
                                                             {
-                                                                <th class="bg-success" style="text-align:center" width="10%">@day.DayOfWeek.Substring(0, 3) @day.DayOfMonth </th>
+                                                                <th class="bg-secondary" style="text-align:center" width="10%">@day.DayOfWeek.Substring(0, 3) @day.DayOfMonth </th>
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            <th width="8%"></th>
+                                                            <th width="10%"></th>
                                                         }
                                                     }
-                                                   @* <th class="bg-info" width="10%"><button type="button" class="btn btn-sm btn-primary" onclick='add_row("tbl_@i")'>Add Row</button></th>*@
+                                                    <th class="bg-secondary" width="5%"><button type="button" class="btn btn-sm btn-primary" onclick='add_row("tbl_@i")'>Add Row</button></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -80,7 +77,7 @@
                                                     {
                                                         row_count += 1;
                                                         var proj_id = project_id + "_" + row_count;
-                                                       // var ac_id = activity_id + "_" + row_count;
+                                                   @*     var ac_id = activity_id + "_" + row_count;*@
                                                         <tr>
                                                             <td>@i</td>
                                                             <td>
@@ -89,11 +86,12 @@
                                                                 </select>
                                                                 @* @Html.DropDownList("project", new SelectList(projects, "id", "name", proj_list[0]), "- Please Select -", new { @class = string.Format("form-control pr {0}", proj_id), onchange = "enable_activities(this)" }) *@
                                                             </td>
-                                                        @*    <td>
-                                                                <select class="@string.Format("form-control act {0}", ac_id)" name="@ac_id" asp-items="@(new SelectList(ViewBag.Activities, "Id", "Name", proj_list[1]))" onchange="enable_inputs(this)" required>
+                                                          @*  <td>*@
+                                                              @*  <select class="@string.Format("form-control act {0}", ac_id)" name="@ac_id" asp-items="@(new SelectList(ViewBag.Activities, "Id", "Name", proj_list[1]))" onchange="enable_inputs(this)" required>
                                                                     <option value="">Select Activity</option>
-                                                                </select>
-                                                            </td>*@
+                                                                </select>*@
+                                                                @* @Html.DropDownList("activity", new SelectList(activities.Where(e => e.project_id == proj_list[0]), "activity_id", "name", proj_list[1]), "- Please Select -", new { @class = string.Format("form-control act {0}", ac_id), onchange = "enable_inputs(this)" }) *@
+                                                           @* </td>*@
                                                             @foreach (var day in week_days)
                                                             {
                                                                 var value = "";
@@ -113,8 +111,8 @@
                                                                 if (day.Date.Month == Model.month)
                                                                 {
                                                                     var read_only = "";
-                                                                   // @if (!string.IsNullOrEmpty(ArrangeUtil.HolidayOrLeave(day.Date, ViewBag.EmpNumber)))
-                                                                  @*  {
+                                                                 @*   @if (!string.IsNullOrEmpty(ArrangeUtil.HolidayOrLeave(day.Date, ViewBag.EmpNumber)))
+                                                                    {
                                                                         read_only = "readonly";
                                                                         value = "8";
                                                                     }*@
@@ -144,7 +142,7 @@
                                                                 }
                                                             }
                                                             <td>
-                                                                <button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'tbl_@i')"><i class="fa fa-trash"></i></button>
+                                                                <button class="btn btn-md btn-danger" type="button" onclick="delete_row(this,'tbl_@i')"><i class="fa fa-trash"></i></button>
                                                                 <button class="btn btn-sm btn-warning" type="button" onclick="clear_row(this)"><i class="fa fa-undo"></i></button>
                                                             </td>
                                                         </tr>
@@ -153,7 +151,7 @@
                                                 else
                                                 {
                                                     project_id += "_1";
-                                                    //activity_id += "_1";
+                                                  @*  activity_id += "_1";*@
                                                     <tr>
                                                         <td>@i</td>
                                                         <td>
@@ -161,7 +159,7 @@
                                                                 <option value="">Select Project</option>
                                                             </select>
                                                         </td>
-                                                        @*<td>
+                                                       @* <td>
                                                             <select class="@string.Format("form-control act {0}", activity_id)" name="@activity_id" disabled="disabled" asp-items="@(new SelectList(ViewBag.Activities, "Id", "Name"))" onchange="enable_inputs(this)" required>
                                                                 <option value="">Select Activity</option>
                                                             </select>
@@ -181,7 +179,7 @@
                                                                 value = time_sheet.Duration.ToString();
                                                             }
                                                             var read_only = "";
-                                                          @*  @if (!string.IsNullOrEmpty(ArrangeUtil.HolidayOrLeave(day.Date, ViewBag.EmpNumber)))
+                                                       @*     @if (!string.IsNullOrEmpty(ArrangeUtil.HolidayOrLeave(day.Date, ViewBag.EmpNumber)))
                                                             {
                                                                 read_only = "readonly";
                                                                 value = "8";
@@ -198,14 +196,14 @@
                                                                         </div>
                                                                     </div>
                                                                     @* <div class="input-group">
-                                                    <input type="number" class="form-control small eligible" maxlength="2" max="24" disabled="disabled" name="@name" value="@value"  id="@name">
-                                                    <span class="input-group-btn">
-                                                    <button type="button" disabled="disabled" data-toggle="modal" onclick=active_comment(this) data-target="#myModal" class="btn btn-default eligible">
-                                                    <i class="fa fa-comment-o"></i>
-                                                    </button>
-                                                    <input type="hidden" name="comment_@name" id="comment_@name" value="" />
-                                                    </span>
-                                                    </div> *@
+                                                                        <input type="number" class="form-control small eligible" maxlength="2" max="24" disabled="disabled" name="@name" value="@value"  id="@name">
+                                                                        <span class="input-group-btn">
+                                                                        <button type="button" disabled="disabled" data-toggle="modal" onclick=active_comment(this) data-target="#myModal" class="btn btn-default eligible">
+                                                                        <i class="fa fa-comment-o"></i>
+                                                                        </button>
+                                                                        <input type="hidden" name="comment_@name" id="comment_@name" value="" />
+                                                                        </span>
+                                                                        </div> *@
                                                                 </td>
                                                             }
                                                             else
@@ -221,10 +219,10 @@
                                                                 </td>
                                                             }
                                                         }
-                                                    @*    <td>
-                                                            <button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'tbl_@i')"><i class="fa fa-trash"></i></button>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-danger" type="button" onclick="delete_row(this,'mainTable')"><i class="fa fa-trash"></i></button>
                                                             <button class="btn btn-sm btn-warning" type="button" onclick="clear_row(this)"><i class=" fas fa-undo"></i></button>
-                                                        </td>*@
+                                                        </td>
                                                     </tr>
                                                 }
                                             </tbody>
@@ -243,7 +241,6 @@
                                     <a class="btn btn-warning" asp-controller="Timesheet" asp-action="MyTimeSheets">Cancel</a>
                                 </div>
                             </form>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -251,32 +248,16 @@
     </section>
 </div>
 
-<div id="myModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="myModal" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="">Add Comment</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="comment">Comment:</label>
-                    <textarea class="form-control" rows="3" id="comment"></textarea>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="add_comment()" class="btn btn-primary">Add</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-
-
 @section Scripts {
-   @* @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}*@
-    <script>
+   @* <script src="~/assets/bundles/editable-table/mindmup-editabletable.js"></script>
+    <!-- Page Specific JS File -->
+    <script src="~/assets/js/page/editable-table.js"></script>*@
+
+    <script src="~/js/timesheet.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+ @*   <script>
         getCategories();
-    </script>
+    </script>*@
 }

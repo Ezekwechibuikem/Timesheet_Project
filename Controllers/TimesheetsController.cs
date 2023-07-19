@@ -32,7 +32,7 @@ namespace Timesheet_Project.Controllers
         //public async Task<IActionResult> Create(int? timesheet_id)
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var emp = _context.Employees.FirstOrDefault(m => m.Id == 2);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 7);
 
             if (emp != null)
             {
@@ -149,7 +149,7 @@ namespace Timesheet_Project.Controllers
                 CreatedAt = DateTime.Now
             };
             _context.Timesheets.Add(timesheet);
-             await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Edit", new { id = timesheet.TimesheetId });
         }
@@ -230,14 +230,14 @@ namespace Timesheet_Project.Controllers
             {
                 _context.Timesheets.Remove(timesheet);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool TimesheetExists(int id)
         {
-          return (_context.Timesheets?.Any(e => e.TimesheetId == id)).GetValueOrDefault();
+            return (_context.Timesheets?.Any(e => e.TimesheetId == id)).GetValueOrDefault();
         }
     }
 }

@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                         <div class="card-header">
+                        <div class="card-header">
                             @if (ViewBag.Message != null)
                             {
                                 <div class="alert alert-info">
@@ -28,18 +28,18 @@
                                             <div class="col-6 col-md-5" style="padding: 5px;">
                                                 <select asp-for="month" class="form-control" onchange="$('#btn_refresh').click()">
                                                     @* <option>...Select Month...</option> *@
-                                                    <option value="1">January</option>
-                                                    <option value="2">February</option>
-                                                    <option value="3">March</option>
-                                                    <option value="4">April</option>
+                                                    <option value="1">Jan</option>
+                                                    <option value="2">Feb</option>
+                                                    <option value="3">Mar</option>
+                                                    <option value="4">Apr</option>
                                                     <option value="5">May</option>
-                                                    <option value="6">June</option>
-                                                    <option value="7">July</option>
-                                                    <option value="8">August</option>
-                                                    <option value="9">September</option>
-                                                    <option value="10">October</option>
-                                                    <option value="11">November</option>
-                                                    <option value="12">December</option>
+                                                    <option value="6">Jun</option>
+                                                    <option value="7">Jul</option>
+                                                    <option value="8">Aug</option>
+                                                    <option value="9">Sep</option>
+                                                    <option value="10">Oct</option>
+                                                    <option value="11">Nov</option>
+                                                    <option value="12">Dec</option>
                                                 </select>
                                             </div>
                                             <div class="col-6 col-md-5" style="padding: 5px;">
@@ -58,39 +58,44 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="p-3">
-                    <div id='calendar'></div>
-                </div>
+                        @*  <div class="p-3">
+                        <div id='calendar'></div>
+                        </div>*@
+                        <div class="card-body">
+                            <div class="fc-overflow">
+                                <div id="myEvent"></div>
+                            </div>
+                        </div>
                         <div class="d-flex align-items-center p-3 mt-2">
-                    @* <h3 class="font-light">1 members selected</h3> *@
-                    <div class="ml-auto">
-                        @if (Model.Timesheet == null)
-                        {
-                            <form asp-action="NewTimeSheet" method="post" id="frm_new_timesheet">
-                                <input type="hidden" asp-for="year" value="@Model.year" />
-                                <input type="hidden" asp-for="month" value="@Model.month" />
-                            </form>
-                            <a class="btn btn-primary text-white btn-rounded py-2 px-3" href="javascript:document.getElementById('frm_new_timesheet').submit()">Add <i class="fas fa-plus ml-2"></i></a>
-                        }
-                        else
-                        {
-                            if (Model.Timesheet.State == "NOTSUBMITTED" || Model.Timesheet.State == "NOTSUBMITTED")
-                            {
-                                <a asp-controller="Timesheet" asp-action="Submit" asp-route-id="@Model.Timesheet.TimesheetId" class="btn btn-success text-white btn-rounded py-2 px-3">Submit <i class="fa fa-check ml-2"></i></a>
-                                <a asp-controller="Timesheet" asp-action="Edit" asp-route-id="@Model.Timesheet.TimesheetId" class="btn btn-info text-white btn-rounded py-2 px-3">Edit <i class="fas fa-edit ml-2"></i></a>
-                            }
-                        }
-                    </div>
-                </div>
+                            @* <h3 class="font-light">1 members selected</h3> *@
+                            <div class="ml-auto">
+                                @if (Model.Timesheet == null)
+                                {
+                                    <form asp-action="NewTimeSheet" method="post" id="frm_new_timesheet">
+                                        <input type="hidden" asp-for="year" value="@Model.year" />
+                                        <input type="hidden" asp-for="month" value="@Model.month" />
+                                    </form>
+                                    <a class="btn btn-primary text-white btn-rounded py-2 px-3" href="javascript:document.getElementById('frm_new_timesheet').submit()">Add <i class="fas fa-plus ml-2"></i></a>
+                                }
+                                else
+                                {
+                                    if (Model.Timesheet.State == "NOTSUBMITTED" || Model.Timesheet.State == "NOTSUBMITTED")
+                                    {
+                                        <a asp-controller="Timesheet" asp-action="Submit" asp-route-id="@Model.Timesheet.TimesheetId" class="btn btn-success text-white btn-rounded py-2 px-3">Submit <i class="fa fa-check ml-2"></i></a>
+                                        <a asp-controller="Timesheet" asp-action="Edit" asp-route-id="@Model.Timesheet.TimesheetId" class="btn btn-info text-white btn-rounded py-2 px-3">Edit <i class="fas fa-edit ml-2"></i></a>
+                                    }
+                                }
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 </div>
-     
+
 <link href="~/assets/bundles/fullcalendar/fullcalendar.min.css" rel="stylesheet" />
-<script>
+@*<script>
 
     document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
@@ -100,9 +105,9 @@
         calendar.render();
     });
 
-</script>
+</script>*@
 <script src="~/assets/bundles/fullcalendar/fullcalendar.min.js"></script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+
 <script>
     $(function () {
         var timesheet_id = @(Model.Timesheet != null ? Model.Timesheet.TimesheetId : 0);
