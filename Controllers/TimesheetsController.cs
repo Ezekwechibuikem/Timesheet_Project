@@ -32,7 +32,7 @@ namespace Timesheet_Project.Controllers
         //public async Task<IActionResult> Create(int? timesheet_id)
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var emp = _context.Employees.FirstOrDefault(m => m.Id == 7);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 4);
 
             if (emp != null)
             {
@@ -119,14 +119,13 @@ namespace Timesheet_Project.Controllers
 
             return View(timesheet);
         }
-
-        // GET: Timesheets/Delete/5
-        [HttpPost]
+  
+        // GET: Previous Timesheet 
         public async Task<IActionResult> NewTimeSheet(int year, int month)
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //var emp = _hrmUtilService.GetEmployeeByUserId(userId);
-            var emp = _context.Employees.FirstOrDefault(m => m.Id == 1);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 5);
 
             //check for existing timesheets
             var start_date = new DateTime(year, month, 1);
@@ -163,9 +162,6 @@ namespace Timesheet_Project.Controllers
 
             var timesheet = await _context.Timesheets
                 .Include(m => m.TimesheetItems).ThenInclude(m => m.Project)
-                //.Include(m => m.TimesheetItems).ThenInclude(m => m.Activity)
-                //.Include(m => m.EmpNumberNavigation).ThenInclude(m => m.EmpReporttoEmpNumberNavigation).ThenInclude(m => m.SupEmpNumberNavigation)
-                //.Include(m => m.TimesheetActionLog).Include(m => m.EmpNumberNavigation)
                 .FirstOrDefaultAsync(m => m.TimesheetId == id);
             if (timesheet == null)
             {
@@ -186,11 +182,12 @@ namespace Timesheet_Project.Controllers
             view_model.LastWeek = timeSheetDays.LastOrDefault().WeekOfMonth;
             view_model.Timesheet = timesheet;
             view_model.TimesheetItem = items;// timesheet.TimesheetItem.ToList();
+        
 
             var timesheet_items = timesheet.TimesheetItems;
-            //ViewData["Projects"] = new SelectList(_hrmUtilService.GetProjects().Result, "Id", "Name");
+            //ViewData["Projects"] = new SelectList(_context.Projects.Where(m => m.ProjectId != 1).ToListAsync().Result, "Id", "Name");
             //ViewData["Activities"] = new SelectList(_hrmUtilService.GetActivities().Result, "Id", "Name");
-            ViewData["Projects"] = await _context.EmpProjects.ToListAsync();
+            ViewData["Projects"] = await _context.Projects.ToListAsync();
             //ViewData["Activities"] = _hrmUtilService.GetActivities().Result;
             ViewBag.timesheet_items = timesheet_items;
 

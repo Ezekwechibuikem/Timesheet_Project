@@ -9,7 +9,6 @@ namespace Timesheet_Project.Models
         public int EmpId { get; set; }
         public int TimesheetId { get; set; }
         public int ProjectId { get; set; }
-        public int AbsenceId { get; set; }
         public DateTime Date { get; set; }
         public int WkDuration { get; set; }
         public string Summary { get; set; } = null!;

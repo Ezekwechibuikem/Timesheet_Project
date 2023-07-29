@@ -16,35 +16,22 @@ namespace Timesheet_Project.Models
         {
         }
 
-        public virtual DbSet<EmpProject> EmpProjects { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
         public virtual DbSet<Project> Projects { get; set; } = null!;
         public virtual DbSet<Timesheet> Timesheets { get; set; } = null!;
-        public virtual DbSet<TimesheetActionLog> TimesheetActionLogs { get; set; } = null!;
         public virtual DbSet<TimesheetItem> TimesheetItems { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//                optionsBuilder.UseSqlServer("Server=ABJLLAB3;Database=TimesheetDB;Trusted_Connection=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<EmpProject>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("EmpProject");
-
-                entity.Property(e => e.EmpId).HasColumnName("emp_id");
-
-                entity.Property(e => e.EmpProjectId)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("emp_project_id");
-            });
-
             modelBuilder.Entity<Employee>(entity =>
             {
                 entity.ToTable("Employee");
@@ -62,7 +49,7 @@ namespace Timesheet_Project.Models
 
             modelBuilder.Entity<Project>(entity =>
             {
-                entity.ToTable("project");
+                entity.ToTable("Project");
 
                 entity.Property(e => e.ProjectId).HasColumnName("project_id");
 
@@ -99,36 +86,7 @@ namespace Timesheet_Project.Models
                     .WithMany(p => p.Timesheets)
                     .HasForeignKey(d => d.EmpId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Timesheet__emp_i__398D8EEE");
-            });
-
-            modelBuilder.Entity<TimesheetActionLog>(entity =>
-            {
-                entity.ToTable("TimesheetActionLog");
-
-                entity.Property(e => e.TimesheetActionLogId).HasColumnName("timesheet_action_log_id");
-
-                entity.Property(e => e.Action)
-                    .HasMaxLength(50)
-                    .HasColumnName("action");
-
-                entity.Property(e => e.Comment)
-                    .HasMaxLength(255)
-                    .HasColumnName("comment");
-
-                entity.Property(e => e.DateTime)
-                    .HasColumnType("datetime")
-                    .HasColumnName("date_time");
-
-                entity.Property(e => e.PerformedBy).HasColumnName("performed_by");
-
-                entity.Property(e => e.TimesheetId).HasColumnName("timesheet_id");
-
-                entity.HasOne(d => d.Timesheet)
-                    .WithMany(p => p.TimesheetActionLogs)
-                    .HasForeignKey(d => d.TimesheetId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Timesheet__times__3C69FB99");
+                    .HasConstraintName("FK__Timesheet__emp_i__17F790F9");
             });
 
             modelBuilder.Entity<TimesheetItem>(entity =>
@@ -136,8 +94,6 @@ namespace Timesheet_Project.Models
                 entity.ToTable("TimesheetItem");
 
                 entity.Property(e => e.TimesheetItemId).HasColumnName("timesheet_item_id");
-
-                entity.Property(e => e.AbsenceId).HasColumnName("absence_id");
 
                 entity.Property(e => e.Date)
                     .HasColumnType("date")
@@ -161,19 +117,19 @@ namespace Timesheet_Project.Models
                     .WithMany(p => p.TimesheetItems)
                     .HasForeignKey(d => d.EmpId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Timesheet__emp_i__4222D4EF");
+                    .HasConstraintName("FK__Timesheet__emp_i__30C33EC3");
 
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.TimesheetItems)
                     .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_TimesheetItem_TimesheetItem");
+                    .HasConstraintName("FK__Timesheet__proje__31B762FC");
 
                 entity.HasOne(d => d.Timesheet)
                     .WithMany(p => p.TimesheetItems)
                     .HasForeignKey(d => d.TimesheetId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Timesheet__times__440B1D61");
+                    .HasConstraintName("FK__Timesheet__times__32AB8735");
             });
 
             OnModelCreatingPartial(modelBuilder);
