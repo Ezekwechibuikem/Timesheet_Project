@@ -125,7 +125,7 @@ namespace Timesheet_Project.Controllers
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //var emp = _hrmUtilService.GetEmployeeByUserId(userId);
-            var emp = _context.Employees.FirstOrDefault(m => m.Id == 1);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 4);
 
             //check for existing timesheets
             var start_date = new DateTime(year, month, 1);
