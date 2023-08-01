@@ -25,7 +25,7 @@
                                 <form asp-action="Create" method="post">
                                     <div class="card-body" style="padding:0px;">
                                         <div class="row">
-                                            <div class="col-6 col-md-5" style="padding: 5px;">
+                                            <div class="ml-auto" style="padding: 2px;">
                                                 <select asp-for="month" class="form-control" onchange="$('#btn_refresh').click()">
                                                     @* <option>...Select Month...</option> *@
                                                     <option value="1">Jan</option>
@@ -42,7 +42,7 @@
                                                     <option value="12">Dec</option>
                                                 </select>
                                             </div>
-                                            <div class="col-6 col-md-5" style="padding: 5px;">
+                                            <div class="ml-auto" style="padding: 2px;">
                                                 <select asp-for="year" onchange="$('#btn_refresh').click()" class="form-control">
                                                     @for (var i = 2020; i <= DateTime.Now.Year; i++)
                                                     {
@@ -50,9 +50,15 @@
                                                     }
                                                 </select>
                                             </div>
-                                            <div class="col-2 col-md-1" style="padding: 2px;">
-                                                <button type="submit" class="btn btn-info btn-circle" id="btn_refresh"><i class="fas fa-redo-alt"></i></button>
+                                            @*<div class="ml-auto" style="padding: 1px; ">
+                                                    <button type="submit" class="btn btn-info btn-circle" id="btn_refresh"><i class="fas fa-redo-alt"></i></button>
+                                             </div>*@
+                                            <div class="ml-auto" style="padding: 2px; line-height: 44px;">
+                                                <button type="submit" class="btn btn-info btn-circle" id="btn_refresh">
+                                                    <i class="fas fa-redo-alt"></i>
+                                                </button>
                                             </div>
+
                                         </div>
                                     </div>
                                 </form>
@@ -87,6 +93,6 @@
                 </div>
             </div>
         </div>
-    </section>
+   </section>
 </div>
 

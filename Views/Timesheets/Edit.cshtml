@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div id="app">
+<div class="main-content">
     <section class="section">
-        <div class="container mt-5">
+        <div class="section-body">
             <div class="row">
-                <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+                <div class="col-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-header">Edit Timesheet for @(new DateTime(Model.year, Model.month, 1).ToString("MMMM yyyy"))</h4>
