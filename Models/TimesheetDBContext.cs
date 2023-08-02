@@ -25,8 +25,7 @@ namespace Timesheet_Project.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=ABJLLAB3;Database=TimesheetDB;Trusted_Connection=True;");
+
             }
         }
 
@@ -117,19 +116,19 @@ namespace Timesheet_Project.Models
                     .WithMany(p => p.TimesheetItems)
                     .HasForeignKey(d => d.EmpId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Timesheet__emp_i__30C33EC3");
+                    .HasConstraintName("FK__Timesheet__emp_i__3C34F16F");
 
                 entity.HasOne(d => d.Project)
                     .WithMany(p => p.TimesheetItems)
                     .HasForeignKey(d => d.ProjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Timesheet__proje__31B762FC");
+                    .HasConstraintName("FK__Timesheet__proje__3D2915A8");
 
                 entity.HasOne(d => d.Timesheet)
                     .WithMany(p => p.TimesheetItems)
                     .HasForeignKey(d => d.TimesheetId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Timesheet__times__32AB8735");
+                    .HasConstraintName("FK__Timesheet__times__3E1D39E1");
             });
 
             OnModelCreatingPartial(modelBuilder);

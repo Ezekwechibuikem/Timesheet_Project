@@ -32,7 +32,7 @@ namespace Timesheet_Project.Controllers
         //public async Task<IActionResult> Create(int? timesheet_id)
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var emp = _context.Employees.FirstOrDefault(m => m.Id == 4);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 5);
 
             if (emp != null)
             {
@@ -125,7 +125,7 @@ namespace Timesheet_Project.Controllers
         {
             //var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             //var emp = _hrmUtilService.GetEmployeeByUserId(userId);
-            var emp = _context.Employees.FirstOrDefault(m => m.Id == 4);
+            var emp = _context.Employees.FirstOrDefault(m => m.Id == 1);
 
             //check for existing timesheets
             var start_date = new DateTime(year, month, 1);
@@ -194,6 +194,48 @@ namespace Timesheet_Project.Controllers
 
             ViewBag.EmpId = timesheet.EmpId;
             return View(view_model);
+        }
+
+        [HttpPost]
+        //[PermissionFilter(permission = "timesheet.posttimesheet")]
+        public async Task<ActionResult> PostTimesheet(IFormCollection form_collection)
+        {
+            var list = form_collection.AsQueryable();
+            var timesheet_id = Convert.ToInt32(form_collection["timesheet_id"]);
+            var timesheet = await _context.Timesheets
+                .Include(m => m.TimesheetItems).ThenInclude(m => m.Project)
+                .FirstOrDefaultAsync(m => m.TimesheetId == timesheet_id);
+
+            var time_sheets = new List<TimesheetItem>();
+            foreach (var key in form_collection.Keys)
+            {
+                var value = form_collection[key];
+                if (value == string.Empty) continue;
+               
+                if (key.StartsWith("p") || key.StartsWith("a") || key.StartsWith("c") || key.StartsWith("t") || key.StartsWith("_"))
+                {
+                    continue;
+                }
+                var item = new TimesheetItem();
+
+                var key_split = key.Split('_');
+                if (key_split.Count() < 3) continue;
+                item.Date = DateTime.Parse(key_split[1]);
+                //var activity_key = "activity_" + key_split[0] + "_" + key_split[2];
+
+                item.ProjectId = Convert.ToInt32(form_collection["project_id" + key_split[0] + "_" + key_split[2]]);
+                item.WkDuration = Convert.ToInt32(value);
+                item.TimesheetId = timesheet_id;
+                item.EmpId = timesheet.EmpId;
+                //item.Comment = form_collection["comment_" + key];
+
+                time_sheets.Add(item);
+            }
+            //_timesheetService.AddTimesheetItem(time_sheets);
+
+            var id = timesheet_id;
+          
+            return RedirectToAction("MyTimesheet", new { timesheet_id = id });
         }
 
         public async Task<IActionResult> Delete(int? id)

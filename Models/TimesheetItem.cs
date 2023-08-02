@@ -11,7 +11,7 @@ namespace Timesheet_Project.Models
         public int ProjectId { get; set; }
         public DateTime Date { get; set; }
         public int WkDuration { get; set; }
-        public string Summary { get; set; } = null!;
+        public string? Summary { get; set; }
         public byte[]? Signature { get; set; }
 
         public virtual Employee Emp { get; set; } = null!;
