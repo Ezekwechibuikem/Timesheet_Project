@@ -24,8 +24,8 @@ namespace Timesheet_Project.ViewModel
     public class TimeSheetO
     {
         public string EmployeeName { get; set; }
-        public int EmpNumber { get; set; }
-        public string Designation { get; set; }
+        public int EmpId { get; set; }
+        //public string Designation { get; set; }
         public List<TimesheetProjects> Projects { get; set; }
     }
 

@@ -70,7 +70,8 @@
                                                     var time_sheet = Model.TimesheetItem.FirstOrDefault(e => e.Date == day.Date);
                                                     if (time_sheet != null)
                                                     {
-                                                        value = time_sheet.Duration.ToString();
+                                                        //wkduration working with timesheet item view model
+                                                        value = time_sheet.WkDuration.ToString();
                                                     }
                                                     if (day.Date.Month == Model.month)
                                                     {
